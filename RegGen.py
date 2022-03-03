@@ -3,7 +3,7 @@ import pandas as pd
 class RegGen():
 	def __init__(self,n_samples=20, n_features=4, n_informative=2, n_targets=1, 
 	                        bias=0.0, effective_rank=None,tail_strength=0.5, 
-	                        noise=0.0, shuffle=True, coef=False, random_state=None):
+	                        noise=0.0, shuffle=True, coef=True, random_state=True):
 		self.n_samples=n_samples
 		self.n_features=n_features
 		self.n_informative=n_informative
@@ -34,16 +34,19 @@ class RegGen():
 	def set_attr (self,attr_dict):
 
 		for key,item in attr_dict.items():
-			print(self.attributes[key])
+			# print(self.attributes[key])
 			self.attributes[key]=item
-			print(self.attributes[key])
+			# print(self.attributes[key])
 	def generate (self,name=''):
 		from sklearn.datasets import make_regression
+		print('GENERSTE',self.attributes.values())
 		data1 = make_regression(*self.attributes.values())
-		# df1 = pd.DataFrame(data1[0],columns=['x'+str(i) for i in range(1,5)])
-		# df1['y'] = data1[1]
+		# print(data1)
+		
+		df1 = pd.DataFrame(data1[0],columns=['x_'+str(i) for i in range(data1[0].shape[1]) ])
+		df1['y'] = data1[1]
 		# self.distributions[name]=df1
-		return data1
+		return df1
 	def ret_xy(self,name):
 		df=self.distributions.get(name)
 		return [column for column in df.columns if 'x' in column],
